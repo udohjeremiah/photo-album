@@ -10,6 +10,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 // Components
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SideMenu from "@/components/SideMenu";
 import ThemeProvider from "@/components/ThemeProvider";
 
 // Lib
@@ -43,7 +44,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex flex-1 gap-2">
+              <SideMenu />
+              {children}
+            </main>
             <Footer />
           </ThemeProvider>
         </ClerkProvider>
