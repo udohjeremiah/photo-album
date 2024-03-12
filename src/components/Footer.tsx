@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="border-t">
-      <div className="container py-4">
+      <div className="container py-3">
         <p className="text-balance text-center text-sm leading-loose text-muted-foreground">
           Built by{" "}
           <a

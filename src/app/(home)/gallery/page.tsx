@@ -23,6 +23,7 @@ export default async function Gallery() {
   const { resources } = await cloudinary.v2.api.resources({
     type: "upload",
     prefix: `photo-album/${userId}`,
+    tags: true,
   });
 
   return (
