@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b backdrop-blur">
-      <div className="container flex items-center justify-between py-2">
+      <div className="container flex items-center justify-between py-3">
         <h1 className="font-bold">
           <Link href="/">
             PHOTO ALBUM<span className="text-red-500">.</span>

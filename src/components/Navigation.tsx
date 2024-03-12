@@ -1,7 +1,8 @@
 "use client";
 
 // Next
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 // Dependencies
 import {
@@ -16,7 +17,6 @@ import { Button } from "@/components/ui/button";
 
 export default function Navigation() {
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <div className="space-y-4 py-4">
@@ -26,36 +26,44 @@ export default function Navigation() {
         </h2>
         <div className="space-y-1">
           <Button
+            asChild
             variant={pathname.startsWith("/gallery") ? "secondary" : "ghost"}
             className="w-full justify-start"
-            onClick={() => router.push("/gallery")}
           >
-            <ImageIcon className="mr-2 h-4 w-4" />
-            Gallery
+            <Link href="/gallery">
+              <ImageIcon className="mr-2 h-4 w-4" />
+              Gallery
+            </Link>
           </Button>
           <Button
+            asChild
             variant={pathname.startsWith("/albums") ? "secondary" : "ghost"}
             className="w-full justify-start"
-            onClick={() => router.push("/albums")}
           >
-            <BackpackIcon className="mr-2 h-4 w-4" />
-            Albums
+            <Link href="/albums">
+              <BackpackIcon className="mr-2 h-4 w-4" />
+              Albums
+            </Link>
           </Button>
           <Button
+            asChild
             variant={pathname.startsWith("/favorites") ? "secondary" : "ghost"}
             className="w-full justify-start"
-            onClick={() => router.push("/favorites")}
           >
-            <HeartIcon className="mr-2 h-4 w-4" />
-            Favorites
+            <Link href="/favorites">
+              <HeartIcon className="mr-2 h-4 w-4" />
+              Favorites
+            </Link>
           </Button>
           <Button
+            asChild
             variant={pathname.startsWith("/archived") ? "secondary" : "ghost"}
             className="w-full justify-start"
-            onClick={() => router.push("/archived")}
           >
-            <TrashIcon className="mr-2 h-4 w-4" />
-            Archived
+            <Link href="/archived">
+              <TrashIcon className="mr-2 h-4 w-4" />
+              Archived
+            </Link>
           </Button>
         </div>
       </div>
