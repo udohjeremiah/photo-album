@@ -1,7 +1,7 @@
 "use client";
 
 // React
-import { useTransition } from "react";
+import { useState } from "react";
 
 // Next
 import { useRouter } from "next/navigation";
@@ -40,7 +40,15 @@ interface ImageProps {
 }
 
 export default function DisplayImages({ images }: { images: ImageProps[] }) {
-  const [transition, startTransition] = useTransition();
+  const [isFavorite, setIsFavorite] = useState<{
+    [public_id: string]: boolean;
+  }>(() => {
+    const favorites: { [public_id: string]: boolean } = {};
+    images.forEach((image) => {
+      favorites[image.public_id] = image.tags.includes("favorite");
+    });
+    return favorites;
+  });
 
   const router = useRouter();
 
@@ -62,19 +70,21 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
               />
             </Link>
             <button
-              onClick={() => {
-                startTransition(() => {
-                  toggleFavorite(
-                    image.public_id,
-                    image.tags.includes("favorite"),
-                  );
-                });
+              onClick={async () => {
+                setIsFavorite((prevFavorites) => ({
+                  ...prevFavorites,
+                  [image.public_id]: !prevFavorites[image.public_id],
+                }));
+                await toggleFavorite(
+                  image.public_id,
+                  isFavorite[image.public_id],
+                );
                 router.refresh();
               }}
               className={cn(
-                "absolute right-2 top-2",
+                "absolute right-2 top-2 text-white",
                 "hover:text-red-500",
-                image.tags.includes("favorite") && "text-red-500",
+                isFavorite[image.public_id] && "text-red-500",
               )}
             >
               <HeartFilledIcon className="h-6 w-6" />
