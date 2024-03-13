@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 
 // Dependencies
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 
 // Components
 import Header from "@/components/Header";
@@ -49,6 +50,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            <Toaster />
           </ThemeProvider>
         </ClerkProvider>
       </body>
