@@ -65,7 +65,11 @@ export default function ImageMenu({ image }: { image: ImageProps }) {
     async function fetchData() {
       const albums = await fetchAlbums(user?.id || "");
       setAlbums(
-        albums.map((album: { name: string; path: string }) => album.name),
+        albums
+          .filter(
+            (album: { name: string; path: string }) => album.name !== "archive",
+          )
+          .map((album: { name: string; path: string }) => album.name),
       );
     }
     fetchData();
