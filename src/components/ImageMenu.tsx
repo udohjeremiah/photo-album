@@ -9,10 +9,11 @@ import { useRouter } from "next/navigation";
 // Dependencies
 import { useUser } from "@clerk/nextjs";
 import { HamburgerMenuIcon, PlusIcon } from "@radix-ui/react-icons";
-import { FolderPlusIcon, LoaderIcon } from "lucide-react";
+import { FolderPlusIcon, LoaderIcon, Trash2Icon } from "lucide-react";
 
 // Actions
 import { addToAlbum } from "@/actions/addToAlbum";
+import { deletePhoto } from "@/actions/deletePhoto";
 import { fetchAlbums } from "@/actions/fetchAlbums";
 
 // Components
@@ -48,11 +49,14 @@ import {
 import { ImageProps } from "@/types";
 
 export default function ImageMenu({ image }: { image: ImageProps }) {
-  const [open, setOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [openAddToAlbumDialog, setOpenAddToAlbumDialog] = useState(false);
+  const [openDeletePhotoDialog, setOpenDeletePhotoDialog] = useState(false);
   const [albums, setAlbums] = useState([]);
   const [albumSelect, setAlbumSelect] = useState("");
   const [albumName, setAlbumName] = useState("");
   const [isAddingToAlbum, setIsAddingToAlbum] = useState(false);
+  const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
 
   const router = useRouter();
 
@@ -80,7 +84,17 @@ export default function ImageMenu({ image }: { image: ImageProps }) {
     setIsAddingToAlbum(true);
     await addToAlbum(image, albumName, existingAlbum);
     setIsAddingToAlbum(false);
-    setOpen(false);
+    setOpenAddToAlbumDialog(false);
+
+    setTimeout(() => {
+      router.refresh();
+    }, 1000);
+  };
+
+  const deletePhotoFromAccount = async (image: ImageProps) => {
+    setIsDeletingPhoto(true);
+    await deletePhoto(image);
+    setIsDeletingPhoto(false);
 
     setTimeout(() => {
       router.refresh();
@@ -88,16 +102,24 @@ export default function ImageMenu({ image }: { image: ImageProps }) {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
           <HamburgerMenuIcon className="h-4 w-4" />
           <span className="sr-only">Toggle image menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="flex flex-col gap-2">
         <DropdownMenuItem asChild>
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog
+            open={openAddToAlbumDialog}
+            onOpenChange={(newOpenState) => {
+              setOpenAddToAlbumDialog(newOpenState);
+              if (!newOpenState) {
+                setOpenDropdown(false);
+              }
+            }}
+          >
             <DialogTrigger asChild>
               <Button variant="outline">
                 <PlusIcon className="mr-2 h-4 w-4" />
@@ -166,6 +188,48 @@ export default function ImageMenu({ image }: { image: ImageProps }) {
                     <FolderPlusIcon className="mr-2 h-4 w-4" />
                   )}
                   Add to Album
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Dialog
+            open={openDeletePhotoDialog}
+            onOpenChange={(newOpenState) => {
+              setOpenDeletePhotoDialog(newOpenState);
+              if (!newOpenState) {
+                setOpenDropdown(false);
+              }
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button variant="outline">
+                <Trash2Icon className="mr-2 h-4 w-4" />
+                Delete photo
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Delete Photo</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to delete this photo? Please be aware
+                  that this action is irreversible.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant="destructive"
+                  type="submit"
+                  disabled={isDeletingPhoto}
+                  onClick={() => deletePhotoFromAccount(image)}
+                >
+                  {isDeletingPhoto ? (
+                    <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash2Icon className="mr-2 h-4 w-4" />
+                  )}
+                  Delete Photo
                 </Button>
               </DialogFooter>
             </DialogContent>
