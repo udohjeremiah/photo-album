@@ -22,31 +22,13 @@ import { toggleFavorite } from "@/actions/toggleFavorite";
 // Components
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import ImageMenu from "./ImageMenu";
 
 // Lib
 import { cn } from "@/lib/utils";
 
-interface ImageProps {
-  asset_id: string;
-  public_id: string;
-  format: string;
-  version: number;
-  resource_type: string;
-  type: string;
-  created_at: Date;
-  bytes: number;
-  width: number;
-  height: number;
-  folder: string;
-  access_mode: string;
-  url: string;
-  secure_url: string;
-  tags: string[];
-  last_update: {
-    tags_updated_at: Date;
-    updated_at: Date;
-  };
-}
+// Types
+import { ImageProps } from "@/types";
 
 export default function DisplayImages({ images }: { images: ImageProps[] }) {
   const [isFavorite, setIsFavorite] = useState<{
@@ -75,17 +57,22 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
         )
         .map((image) => (
-          <Card key={image.public_id}>
+          <Card key={image.public_id} className="break-inside-avoid-column">
             <CardContent className="p-0">
               <CldImage
                 src={image.public_id}
                 alt={image.public_id}
                 width={image.width}
                 height={image.height}
-                className="rounded-t-md"
+                className="rounded-t-xl"
               />
             </CardContent>
             <CardFooter className="mt-1 flex p-0">
+              <Button asChild variant="ghost">
+                <Link href={image.secure_url}>
+                  <EyeOpenIcon className="h-4 w-4" />
+                </Link>
+              </Button>
               <Button
                 variant="ghost"
                 onClick={async () => {
@@ -108,11 +95,6 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
                   )}
                 />
               </Button>
-              <Button asChild variant="ghost">
-                <Link href={image.secure_url}>
-                  <EyeOpenIcon className="h-4 w-4" />
-                </Link>
-              </Button>
               <Button
                 variant="ghost"
                 onClick={async () => {
@@ -128,6 +110,7 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
               >
                 <Share1Icon className="h-4 w-4" />
               </Button>
+              <ImageMenu image={image} />
             </CardFooter>
           </Card>
         ))}

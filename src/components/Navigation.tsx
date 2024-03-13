@@ -6,11 +6,11 @@ import Link from "next/link";
 
 // Dependencies
 import {
-  BackpackIcon,
-  HeartIcon,
-  ImageIcon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
+  ArchiveRestoreIcon,
+  FolderHeartIcon,
+  ImagesIcon,
+  LibraryBigIcon,
+} from "lucide-react";
 
 // Components
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,7 @@ export default function Navigation() {
             className="w-full justify-start"
           >
             <Link href="/gallery">
-              <ImageIcon className="mr-2 h-4 w-4" />
+              <ImagesIcon className="mr-2 h-4 w-4" />
               Gallery
             </Link>
           </Button>
@@ -41,7 +41,7 @@ export default function Navigation() {
             className="w-full justify-start"
           >
             <Link href="/albums">
-              <BackpackIcon className="mr-2 h-4 w-4" />
+              <LibraryBigIcon className="mr-2 h-4 w-4" />
               Albums
             </Link>
           </Button>
@@ -51,7 +51,7 @@ export default function Navigation() {
             className="w-full justify-start"
           >
             <Link href="/favorites">
-              <HeartIcon className="mr-2 h-4 w-4" />
+              <FolderHeartIcon className="mr-2 h-4 w-4" />
               Favorites
             </Link>
           </Button>
@@ -61,7 +61,7 @@ export default function Navigation() {
             className="w-full justify-start"
           >
             <Link href="/archived">
-              <TrashIcon className="mr-2 h-4 w-4" />
+              <ArchiveRestoreIcon className="mr-2 h-4 w-4" />
               Archived
             </Link>
           </Button>
