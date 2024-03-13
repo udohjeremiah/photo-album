@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ArchivedEmptyPlaceholder() {
   return (
-    <div className="flex h-[430px] items-center justify-center rounded-md border border-dashed">
+    <div className="flex h-[430px] items-center justify-center rounded-md border border-dashed p-4">
       <div className="mx-auto flex flex-col items-center justify-center text-center">
         <ArchiveRestoreIcon className="h-12 w-12" />
         <h3 className="mt-4 text-lg font-semibold">No archived photos added</h3>

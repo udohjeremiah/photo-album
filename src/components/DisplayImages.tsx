@@ -62,6 +62,7 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
             <Button asChild variant="ghost">
               <Link href={image.secure_url}>
                 <EyeIcon className="h-4 w-4" />
+                <span className="sr-only">View</span>
               </Link>
             </Button>
             <Button
@@ -85,6 +86,7 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
                   isFavorite[image.public_id] && "text-red-500",
                 )}
               />
+              <span className="sr-only">Like</span>
             </Button>
             <Button
               variant="ghost"
@@ -100,6 +102,7 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
               }}
             >
               <Share2Icon className="h-4 w-4" />
+              <span className="sr-only">Share</span>
             </Button>
             <ImageMenu image={image} />
           </CardFooter>

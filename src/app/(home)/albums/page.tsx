@@ -36,7 +36,7 @@ export default async function Albums() {
           </p>
         </div>
         <Separator className="my-4" />
-        {albums.length ? (
+        {filteredAlbums.length ? (
           <DisplayAlbums albums={filteredAlbums} />
         ) : (
           <AlbumsEmptyPlaceholder />
