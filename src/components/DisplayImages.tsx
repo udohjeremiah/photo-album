@@ -8,11 +8,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // Dependencies
-import {
-  EyeOpenIcon,
-  HeartFilledIcon,
-  Share1Icon,
-} from "@radix-ui/react-icons";
+import { EyeIcon, HeartIcon, Share2Icon } from "lucide-react";
 import { CldImage } from "next-cloudinary";
 import { toast } from "sonner";
 
@@ -51,69 +47,64 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
         "lg:columns-3",
       )}
     >
-      {images
-        .sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        )
-        .map((image) => (
-          <Card key={image.public_id} className="break-inside-avoid-column">
-            <CardContent className="p-0">
-              <CldImage
-                src={image.public_id}
-                alt={image.public_id}
-                width={image.width}
-                height={image.height}
-                className="rounded-t-xl"
+      {images.map((image) => (
+        <Card key={image.public_id} className="break-inside-avoid-column">
+          <CardContent className="p-0">
+            <CldImage
+              src={image.public_id}
+              alt={image.public_id}
+              width={image.width}
+              height={image.height}
+              className="rounded-t-xl"
+            />
+          </CardContent>
+          <CardFooter className="mt-1 flex p-0">
+            <Button asChild variant="ghost">
+              <Link href={image.secure_url}>
+                <EyeIcon className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={async () => {
+                setIsFavorite((prevFavorites) => ({
+                  ...prevFavorites,
+                  [image.public_id]: !prevFavorites[image.public_id],
+                }));
+                await toggleFavorite(
+                  image.public_id,
+                  isFavorite[image.public_id],
+                );
+                router.refresh();
+              }}
+            >
+              <HeartIcon
+                className={cn(
+                  "h-4 w-4",
+                  "hover:text-red-500",
+                  isFavorite[image.public_id] && "text-red-500",
+                )}
               />
-            </CardContent>
-            <CardFooter className="mt-1 flex p-0">
-              <Button asChild variant="ghost">
-                <Link href={image.secure_url}>
-                  <EyeOpenIcon className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={async () => {
-                  setIsFavorite((prevFavorites) => ({
-                    ...prevFavorites,
-                    [image.public_id]: !prevFavorites[image.public_id],
-                  }));
-                  await toggleFavorite(
-                    image.public_id,
-                    isFavorite[image.public_id],
-                  );
-                  router.refresh();
-                }}
-              >
-                <HeartFilledIcon
-                  className={cn(
-                    "h-4 w-4",
-                    "hover:text-red-500",
-                    isFavorite[image.public_id] && "text-red-500",
-                  )}
-                />
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={async () => {
-                  await navigator.clipboard.writeText(image.secure_url);
-                  toast("🎉 Share your visual stories", {
-                    description: "The image link has been successfully copied",
-                    action: {
-                      label: "Close",
-                      onClick: () => toast.dismiss(),
-                    },
-                  });
-                }}
-              >
-                <Share1Icon className="h-4 w-4" />
-              </Button>
-              <ImageMenu image={image} />
-            </CardFooter>
-          </Card>
-        ))}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={async () => {
+                await navigator.clipboard.writeText(image.secure_url);
+                toast("🎉 Share your visual stories", {
+                  description: "The image link has been successfully copied",
+                  action: {
+                    label: "Close",
+                    onClick: () => toast.dismiss(),
+                  },
+                });
+              }}
+            >
+              <Share2Icon className="h-4 w-4" />
+            </Button>
+            <ImageMenu image={image} />
+          </CardFooter>
+        </Card>
+      ))}
     </div>
   );
 }

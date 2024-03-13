@@ -20,11 +20,13 @@ export const metadata: Metadata = {
 export default async function Gallery() {
   const { userId } = auth();
 
-  const { resources } = await cloudinary.v2.api.resources({
-    type: "upload",
-    prefix: `photo-album/${userId}`,
-    tags: true,
-  });
+  const { resources } = await cloudinary.v2.search
+    .expression(
+      `folder=photo-album/${userId} -folder=photo-album/${userId}/archive`,
+    )
+    .sort_by("created_at", "desc")
+    .with_field("tags")
+    .execute();
 
   return (
     <div className="min-h-[calc(100vh-7.2rem)] w-full border-l p-6">

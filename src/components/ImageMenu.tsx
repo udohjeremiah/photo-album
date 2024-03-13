@@ -9,11 +9,11 @@ import { useRouter } from "next/navigation";
 // Dependencies
 import { useUser } from "@clerk/nextjs";
 import { HamburgerMenuIcon, PlusIcon } from "@radix-ui/react-icons";
-import { FolderPlusIcon, LoaderIcon, Trash2Icon } from "lucide-react";
+import { ArchiveRestoreIcon, FolderPlusIcon, LoaderIcon } from "lucide-react";
 
 // Actions
 import { addToAlbum } from "@/actions/addToAlbum";
-import { deletePhoto } from "@/actions/deletePhoto";
+import { movePhoto } from "@/actions/movePhoto";
 import { fetchAlbums } from "@/actions/fetchAlbums";
 
 // Components
@@ -51,12 +51,11 @@ import { ImageProps } from "@/types";
 export default function ImageMenu({ image }: { image: ImageProps }) {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openAddToAlbumDialog, setOpenAddToAlbumDialog] = useState(false);
-  const [openDeletePhotoDialog, setOpenDeletePhotoDialog] = useState(false);
   const [albums, setAlbums] = useState([]);
   const [albumSelect, setAlbumSelect] = useState("");
   const [albumName, setAlbumName] = useState("");
   const [isAddingToAlbum, setIsAddingToAlbum] = useState(false);
-  const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
+  const [isMovingToArchive, setIsMovingToArchive] = useState(false);
 
   const router = useRouter();
 
@@ -91,10 +90,11 @@ export default function ImageMenu({ image }: { image: ImageProps }) {
     }, 1000);
   };
 
-  const deletePhotoFromAccount = async (image: ImageProps) => {
-    setIsDeletingPhoto(true);
-    await deletePhoto(image);
-    setIsDeletingPhoto(false);
+  const moveImageToArchive = async (image: ImageProps) => {
+    setIsMovingToArchive(true);
+    await movePhoto(image, "archive");
+    setIsMovingToArchive(false);
+    setOpenDropdown(false);
 
     setTimeout(() => {
       router.refresh();
@@ -194,46 +194,18 @@ export default function ImageMenu({ image }: { image: ImageProps }) {
           </Dialog>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Dialog
-            open={openDeletePhotoDialog}
-            onOpenChange={(newOpenState) => {
-              setOpenDeletePhotoDialog(newOpenState);
-              if (!newOpenState) {
-                setOpenDropdown(false);
-              }
-            }}
+          <Button
+            variant="outline"
+            disabled={isMovingToArchive}
+            onClick={() => moveImageToArchive(image)}
           >
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                <Trash2Icon className="mr-2 h-4 w-4" />
-                Delete photo
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Delete Photo</DialogTitle>
-                <DialogDescription>
-                  Are you sure you want to delete this photo? Please be aware
-                  that this action is irreversible.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button
-                  variant="destructive"
-                  type="submit"
-                  disabled={isDeletingPhoto}
-                  onClick={() => deletePhotoFromAccount(image)}
-                >
-                  {isDeletingPhoto ? (
-                    <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <Trash2Icon className="mr-2 h-4 w-4" />
-                  )}
-                  Delete Photo
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+            {isMovingToArchive ? (
+              <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <ArchiveRestoreIcon className="mr-2 h-4 w-4" />
+            )}
+            Move to Archive
+          </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
