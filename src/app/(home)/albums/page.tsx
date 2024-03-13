@@ -22,6 +22,9 @@ export default async function Albums() {
   const { userId } = auth();
 
   const albums = await fetchAlbums(userId || "");
+  const filteredAlbums = albums.filter(
+    (album: { name: string; path: string }) => album.name !== "archive",
+  );
 
   return (
     <div className="min-h-[calc(100vh-7.2rem)] w-full border-l p-6">
@@ -34,7 +37,7 @@ export default async function Albums() {
         </div>
         <Separator className="my-4" />
         {albums.length ? (
-          <DisplayAlbums albums={albums} />
+          <DisplayAlbums albums={filteredAlbums} />
         ) : (
           <AlbumsEmptyPlaceholder />
         )}
