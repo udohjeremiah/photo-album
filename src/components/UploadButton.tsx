@@ -4,9 +4,9 @@
 import { useRouter } from "next/navigation";
 
 // Dependencies
+import { useUser } from "@clerk/nextjs";
 import { UploadIcon } from "@radix-ui/react-icons";
 import { CldUploadButton } from "next-cloudinary";
-import { useUser } from "@clerk/nextjs";
 
 // Components
 import { Button } from "@/components/ui/button";

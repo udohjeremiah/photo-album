@@ -8,7 +8,7 @@ import cloudinary from "cloudinary";
 // Components
 import { Separator } from "@/components/ui/separator";
 import DisplayImages from "@/components/DisplayImages";
-import FavoriteEmptyPlaceholder from "@/components/FavoriteEmptyPlaceholder";
+import FavoritesEmptyPlaceholder from "@/components/FavoritesEmptyPlaceholder";
 
 export const metadata: Metadata = {
   title: "Favorites | Photo Album",
@@ -38,7 +38,7 @@ export default async function Favorites() {
         {resources.length ? (
           <DisplayImages images={resources} />
         ) : (
-          <FavoriteEmptyPlaceholder />
+          <FavoritesEmptyPlaceholder />
         )}
       </div>
     </div>
