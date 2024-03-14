@@ -30,14 +30,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          inter.className,
-          "flex min-h-dvh max-w-[100dvw] flex-col overflow-x-hidden antialiased",
-        )}
-      >
-        <ClerkProvider>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={cn(
+            inter.className,
+            "flex min-h-dvh max-w-[100dvw] flex-col overflow-x-hidden antialiased",
+          )}
+        >
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -52,8 +52,8 @@ export default function RootLayout({
             <Footer />
             <Toaster />
           </ThemeProvider>
-        </ClerkProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
