@@ -11,6 +11,9 @@ import DisplayImages from "@/components/DisplayImages";
 import GalleryEmptyPlaceholder from "@/components/GalleryEmptyPlaceholder";
 import UploadButton from "@/components/UploadButton";
 
+// Lib
+import { cn } from "@/lib/utils";
+
 export const metadata: Metadata = {
   title: "Gallery | Photo Album",
   description:
@@ -29,7 +32,7 @@ export default async function Gallery() {
     .execute();
 
   return (
-    <div className="min-h-[calc(100vh-7.2rem)] w-full border-l p-6">
+    <div className={cn("min-h-[calc(100vh-7.2rem)] w-full p-6", "lg:border-l")}>
       <div>
         <div className="flex items-start justify-between">
           <div className="space-y-1">

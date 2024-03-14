@@ -10,6 +10,9 @@ import { Separator } from "@/components/ui/separator";
 import DisplayImages from "@/components/DisplayImages";
 import FavoritesEmptyPlaceholder from "@/components/FavoritesEmptyPlaceholder";
 
+// Lib
+import { cn } from "@/lib/utils";
+
 export const metadata: Metadata = {
   title: "Favorites | Photo Album",
   description:
@@ -26,7 +29,7 @@ export default async function Favorites() {
     .execute();
 
   return (
-    <div className="min-h-[calc(100vh-7.2rem)] w-full border-l p-6">
+    <div className={cn("min-h-[calc(100vh-7.2rem)] w-full p-6", "lg:border-l")}>
       <div>
         <div className="space-y-1">
           <h2 className="text-3xl font-bold">Favorites</h2>

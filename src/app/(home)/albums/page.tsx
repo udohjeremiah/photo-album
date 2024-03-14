@@ -12,6 +12,9 @@ import { Separator } from "@/components/ui/separator";
 import AlbumsEmptyPlaceholder from "@/components/AlbumsEmptyPlaceholder";
 import DisplayAlbums from "@/components/DisplayAlbums";
 
+// Lib
+import { cn } from "@/lib/utils";
+
 export const metadata: Metadata = {
   title: "Albums | Photo Album",
   description:
@@ -27,7 +30,7 @@ export default async function Albums() {
   );
 
   return (
-    <div className="min-h-[calc(100vh-7.2rem)] w-full border-l p-6">
+    <div className={cn("min-h-[calc(100vh-7.2rem)] w-full p-6", "lg:border-l")}>
       <div>
         <div className="space-y-1">
           <h2 className="text-3xl font-bold">Albums</h2>
