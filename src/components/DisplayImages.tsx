@@ -8,7 +8,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // Dependencies
-import { EyeIcon, HeartIcon, Share2Icon } from "lucide-react";
+import { HeartFilledIcon } from "@radix-ui/react-icons";
+import { EyeIcon, Share2Icon } from "lucide-react";
 import { CldImage } from "next-cloudinary";
 import { toast } from "sonner";
 
@@ -79,7 +80,7 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
                 router.refresh();
               }}
             >
-              <HeartIcon
+              <HeartFilledIcon
                 className={cn(
                   "h-4 w-4",
                   "hover:text-red-500",

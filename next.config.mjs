@@ -2,7 +2,6 @@
 const nextConfig = {
   async redirects() {
     return [
-      // Basic redirect
       {
         source: "/",
         destination: "/gallery",
