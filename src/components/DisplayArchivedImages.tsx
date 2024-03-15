@@ -57,7 +57,7 @@ export default function DisplayArchivedImages({
     await movePhoto(image);
     setIsMovingPhoto((prevMoveStates) => ({
       ...prevMoveStates,
-      [image.public_id]: true,
+      [image.public_id]: false,
     }));
 
     setTimeout(() => {

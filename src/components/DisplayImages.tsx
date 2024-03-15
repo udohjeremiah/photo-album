@@ -38,8 +38,40 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
     });
     return favorites;
   });
+  const [isFavoritingPhoto, setIsFavoritingPhoto] = useState<{
+    [public_id: string]: boolean;
+  }>(() => {
+    const imagesFavoritingState: { [public_id: string]: boolean } = {};
+    images.forEach((image) => {
+      imagesFavoritingState[image.public_id] = false;
+    });
+    return imagesFavoritingState;
+  });
 
   const router = useRouter();
+
+  const togglePhotoAsFavorite = async (image: ImageProps) => {
+    setIsFavoritingPhoto((prevMoveStates) => ({
+      ...prevMoveStates,
+      [image.public_id]: true,
+    }));
+
+    setIsFavorite((prevFavorites) => ({
+      ...prevFavorites,
+      [image.public_id]: !prevFavorites[image.public_id],
+    }));
+
+    await toggleFavorite(image.public_id, isFavorite[image.public_id]);
+
+    setIsFavoritingPhoto((prevMoveStates) => ({
+      ...prevMoveStates,
+      [image.public_id]: false,
+    }));
+
+    setTimeout(() => {
+      router.refresh();
+    }, 1000);
+  };
 
   return (
     <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 768: 2, 1024: 3 }}>
@@ -64,16 +96,9 @@ export default function DisplayImages({ images }: { images: ImageProps[] }) {
               </Button>
               <Button
                 variant="ghost"
-                onClick={async () => {
-                  setIsFavorite((prevFavorites) => ({
-                    ...prevFavorites,
-                    [image.public_id]: !prevFavorites[image.public_id],
-                  }));
-                  await toggleFavorite(
-                    image.public_id,
-                    isFavorite[image.public_id],
-                  );
-                  router.refresh();
+                disabled={isFavoritingPhoto[image.public_id]}
+                onClick={() => {
+                  togglePhotoAsFavorite(image);
                 }}
               >
                 <HeartFilledIcon

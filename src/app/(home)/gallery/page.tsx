@@ -25,7 +25,7 @@ export default async function Gallery() {
 
   const { resources } = await cloudinary.v2.search
     .expression(
-      `folder=photo-album/${userId} -folder=photo-album/${userId}/archive`,
+      `folder=photo-album/${userId} AND -folder=photo-album/${userId}/archive`,
     )
     .sort_by("created_at", "desc")
     .with_field("tags")

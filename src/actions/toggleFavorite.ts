@@ -9,6 +9,4 @@ export async function toggleFavorite(publicId: string, isFavorite: boolean) {
   } else {
     await cloudinary.v2.uploader.add_tag("favorite", [publicId]);
   }
-
-  await new Promise((resolve) => setTimeout(resolve, 2000));
 }
