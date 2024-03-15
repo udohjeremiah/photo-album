@@ -1,5 +1,8 @@
 "use client";
 
+// React
+import { useState } from "react";
+
 // Next
 import Link from "next/link";
 
@@ -17,6 +20,8 @@ import ThemeSwitcher from "./ThemeSwitcher";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
 export default function Header() {
+  const [openDrawer, setOpenDrawer] = useState(false);
+
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   return (
@@ -31,14 +36,14 @@ export default function Header() {
           <UserButton />
           <ThemeSwitcher />
           {!isDesktop && (
-            <Sheet>
+            <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
                   <HamburgerMenuIcon />
                 </Button>
               </SheetTrigger>
               <SheetContent className="px-0 py-6">
-                <Navigation />
+                <Navigation drawerSetter={setOpenDrawer} />
               </SheetContent>
             </Sheet>
           )}

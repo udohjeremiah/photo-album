@@ -1,5 +1,8 @@
 "use client";
 
+// React
+import { Dispatch, SetStateAction } from "react";
+
 // Next
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -15,8 +18,18 @@ import {
 // Components
 import { Button } from "@/components/ui/button";
 
-export default function Navigation() {
+interface NavigationProps {
+  drawerSetter?: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function Navigation({ drawerSetter }: NavigationProps) {
   const pathname = usePathname();
+
+  const handleClick = () => {
+    if (drawerSetter) {
+      drawerSetter(false);
+    }
+  };
 
   return (
     <div className="space-y-4 py-4">
@@ -28,6 +41,7 @@ export default function Navigation() {
           <Button
             asChild
             variant={pathname.startsWith("/gallery") ? "secondary" : "ghost"}
+            onClick={handleClick}
             className="w-full justify-start"
           >
             <Link href="/gallery">
@@ -38,6 +52,7 @@ export default function Navigation() {
           <Button
             asChild
             variant={pathname.startsWith("/albums") ? "secondary" : "ghost"}
+            onClick={handleClick}
             className="w-full justify-start"
           >
             <Link href="/albums">
@@ -48,6 +63,7 @@ export default function Navigation() {
           <Button
             asChild
             variant={pathname.startsWith("/favorites") ? "secondary" : "ghost"}
+            onClick={handleClick}
             className="w-full justify-start"
           >
             <Link href="/favorites">
@@ -58,6 +74,7 @@ export default function Navigation() {
           <Button
             asChild
             variant={pathname.startsWith("/archived") ? "secondary" : "ghost"}
+            onClick={handleClick}
             className="w-full justify-start"
           >
             <Link href="/archived">
